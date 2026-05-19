@@ -17,9 +17,33 @@ inventario('Kael', [arco, flechas]).
 inventario('Rin', [varita, grimorio, pocion, amuleto]).
 
 %Inventario de los nuevos personaaajes 
-inventario('Kratos',[hacha_leviatan,espadas_caos,lanza_espartana])
-inventario('Nathan Drake',[diario,pistola,rifle_m16])
-inventari('Crash Bandicoot',[pato_ule,mascara,zapatos_velocidad])
+inventario('Kratos',[hacha_leviatan,espadas_caos,lanza_espartana]).
+inventario('Nathan Drake',[diario,pistola,rifle_m16]).
+inventario('Crash Bandicoot',[pato_ule,mascara,zapatos_velocidad]).
+
+%Armas agregarle punton de ataque (Nombre,puntos de ataque) --Solo considero las que hacen daño
+arma(espada,10).
+arma(pocion,2).
+arma(escudo,3).
+arma(arco,20).
+arma(varita,50).
+arma(grimorio,60).
+
+arma(hacha_leviatan,200).
+arma(espadas_caos,250).
+arma(lanza_espartana,100).
+
+arma(pistola,75).
+arma(rifle_m16, 90).
+arma(pato_ule,1).
+arma(zapatos_velodidad,30).
+
+
+
+
+
+
+
 
 
 
