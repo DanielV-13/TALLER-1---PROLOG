@@ -16,6 +16,12 @@ inventario('Elara', [espada, escudo, pocion]).
 inventario('Kael', [arco, flechas]).
 inventario('Rin', [varita, grimorio, pocion, amuleto]).
 
+%Inventario de los nuevos personaaajes 
+inventario('Kratos',[hacha_leviatan,espadas_caos,lanza_espartana])
+inventario('Nathan Drake',[diario,pistola,rifle_m16])
+inventari('Crash Bandicoot',[pato_ule,mascara,zapatos_velocidad])
+
+
 
 requiere(m2, escudo).
 requiere(m2, pocion).
