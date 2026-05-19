@@ -38,6 +38,12 @@ arma(rifle_m16, 90).
 arma(pato_ule,1).
 arma(zapatos_velodidad,30).
 
+%tipos de enemigos  (Nombre, franquicia de la que viene, vida - puntos de ataque que soporta)
+enemigo('Valkyria','God of War', 300).
+enemigo ('Mercenario','Uncharted',80).
+enemigo('Jabali','Crash Bandicoot',25).
+
+
 
 
 
