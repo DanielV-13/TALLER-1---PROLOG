@@ -1,0 +1,8 @@
+Sobre el juego desarrollado en clase aumentar
+
+1) 2 nuevas reglas
+2) 3 nuevos jugadores
+3) 3 tipos de enemigos (deben tener una vida para poder ser atacados por los enemigos e ilimnados)
+	solo existen 2 estados (lo mataste o no) no existe puntos intermedios ni se le puede quitar vida a medias a los enemigos
+4) fuerza de ataque a las armas (agregar una fuerza de ataque-puntos de vida que le quita un ataque a un enemigo)
+5)Ejecución del ataque (1 jugador, varios jugadores - ataques en grupo) , se deben construir una frase diciendo si un ataque mato a un enemigo o no usar el CONSTRUCTOR DE ORACIONES YA ESTABLECIDOS.
