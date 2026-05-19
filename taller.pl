@@ -16,49 +16,37 @@ inventario('Elara', [espada, escudo, pocion]).
 inventario('Kael', [arco, flechas]).
 inventario('Rin', [varita, grimorio, pocion, amuleto]).
 
-%Inventario de los nuevos personaaajes 
-inventario('Kratos',[hacha_leviatan,espadas_caos,lanza_espartana]).
-inventario('Nathan Drake',[diario,pistola,rifle_m16]).
-inventario('Crash Bandicoot',[pato_ule,mascara,zapatos_velocidad]).
+inventario('Kratos',[hacha_leviatan, espadas_caos, lanza_espartana]).
+inventario('Nathan Drake',[diario, pistola, rifle_m16]).
+inventario('Crash Bandicoot',[pato_ule, mascara, zapatos_velocidad]).
 
-%Armas agregarle punton de ataque (Nombre,puntos de ataque) --Solo considero las que hacen daño
-arma(espada,10).
-arma(pocion,2).
-arma(escudo,3).
-arma(arco,20).
-arma(varita,50).
-arma(grimorio,60).
-
-arma(hacha_leviatan,200).
-arma(espadas_caos,250).
-arma(lanza_espartana,100).
-
-arma(pistola,75).
+% Armas con puntos de ataque --- Estructura (Nombre, PuntosAtaque)
+arma(espada, 10).
+arma(pocion, 2).
+arma(escudo, 3).
+arma(arco, 20).
+arma(varita, 50).
+arma(grimorio, 60).
+arma(hacha_leviatan, 200).
+arma(espadas_caos, 250).
+arma(lanza_espartana, 100).
+arma(pistola, 75).
 arma(rifle_m16, 90).
-arma(pato_ule,1).
-arma(zapatos_velodidad,30).
+arma(pato_ule, 1).
+arma(zapatos_velocidad, 30).
 
-%tipos de enemigos  (Nombre, franquicia de la que viene, vida - puntos de ataque que soporta)
-enemigo('Valkyria','God of War', 300).
-enemigo ('Mercenario','Uncharted',80).
-enemigo('Jabali','Crash Bandicoot',25).
-
-
-
-
-
-
-
-
-
-
+% Tipos de enemigos --- Estructura (Nombre, Franquicia, Vida)
+enemigo('Valkyria', 'God of War', 300).
+enemigo('Mercenario', 'Uncharted', 80).
+enemigo('Jabali', 'Crash Bandicoot', 25).
 
 requiere(m2, escudo).
 requiere(m2, pocion).
 requiere(m3, grimorio).
 requiere(m3, pocion).
 
-% -- Reglas Aritmeticas y Recursivas --
+
+% -- Reglas originales --
 
 puede_aceptar(Personaje, ID_Mision) :-
     personaje(Personaje, Nivel, _),
@@ -90,33 +78,69 @@ fusionar_equipo(P1, P2, EquipoFusionado) :-
     inventario(P2, L2),
     append(L1, L2, EquipoFusionado).
 
-% -- NLP: conjugacion verbal --
+
+% -- Nuevas reglas --
+
+% Regla 1: El personaje tiene al menos un arma en su inventario
+tiene_arma(Personaje) :-
+    inventario(Personaje, Lista),
+    member(Arma, Lista),
+    arma(Arma, _).
+
+% Regla 2: El personaje es de alto nivel (mayor a 5)
+es_alto_nivel(Personaje) :-
+    personaje(Personaje, Nivel, _),
+    Nivel > 5.
+
+
+% -- Conjugacion verbal --
 
 tiempo(presente). tiempo(pasado). tiempo(futuro).
 persona(primera). persona(segunda). persona(tercera).
 numero(singular). numero(plural).
 
-ser(presente, tercera, singular, "es").
-ser(pasado,   tercera, singular, "fue").
-ser(futuro,   tercera, singular, "será").
-ser(presente, primera, singular, "soy").
-ser(presente, primera, plural,   "somos").
-% plural para grupos
-ser(presente, tercera, plural, "son").
-ser(pasado,   tercera, plural, "fueron").
-ser(futuro,   tercera, plural, "serán").
+ser(presente, tercera, singular, 'es').
+ser(pasado,   tercera, singular, 'fue').
+ser(futuro,   tercera, singular, 'sera').
+ser(presente, primera, singular, 'soy').
+ser(presente, primera, plural,   'somos').
+ser(presente, tercera, plural,   'son').
+ser(pasado,   tercera, plural,   'fueron').
+ser(futuro,   tercera, plural,   'seran').
+
+derrotar(presente, tercera, singular, 'derrota').
+derrotar(pasado,   tercera, singular, 'derroto').
+derrotar(futuro,   tercera, singular, 'derrotara').
+derrotar(presente, tercera, plural,   'derrotan').
+derrotar(pasado,   tercera, plural,   'derrotaron').
+derrotar(futuro,   tercera, plural,   'derrotaran').
+
+eliminar(presente, tercera, singular, 'elimina').
+eliminar(pasado,   tercera, singular, 'elimino').
+eliminar(futuro,   tercera, singular, 'eliminara').
+eliminar(presente, tercera, plural,   'eliminan').
+eliminar(pasado,   tercera, plural,   'eliminaron').
+eliminar(futuro,   tercera, plural,   'eliminaran').
+
+sobrevivir(presente, tercera, singular, 'sobrevive').
+sobrevivir(pasado,   tercera, singular, 'sobrevivio').
+sobrevivir(futuro,   tercera, singular, 'sobrevivira').
+sobrevivir(presente, tercera, plural,   'sobreviven').
+sobrevivir(pasado,   tercera, plural,   'sobrevivieron').
+sobrevivir(futuro,   tercera, plural,   'sobreviviran').
 
 conjugar_accion(Verbo, Tiempo, Persona, Numero, Conjugacion) :-
     tiempo(Tiempo), persona(Persona), numero(Numero),
-    ( Verbo = "ser" ->
-        ser(Tiempo, Persona, Numero, R),
-        Conjugacion = R
-    ;   Conjugacion = Verbo
+    ( Verbo = ser        -> ser(Tiempo, Persona, Numero, Conjugacion)
+    ; Verbo = derrotar   -> derrotar(Tiempo, Persona, Numero, Conjugacion)
+    ; Verbo = eliminar   -> eliminar(Tiempo, Persona, Numero, Conjugacion)
+    ; Verbo = sobrevivir -> sobrevivir(Tiempo, Persona, Numero, Conjugacion)
+    ;                       Conjugacion = Verbo
     ).
 
-% -- Logica de grupos --
 
-% suma la XP de todos los personajes en la lista
+% -- Logica de grupos y misiones --
+
 sumar_xp_grupo([], 0).
 sumar_xp_grupo([H|T], Total) :-
     personaje(H, Nivel, _),
@@ -124,13 +148,11 @@ sumar_xp_grupo([H|T], Total) :-
     sumar_xp_grupo(T, XP_T),
     Total is XP_H + XP_T.
 
-% el grupo puede ir si su XP combinada alcanza la requerida
 grupo_puede_aceptar(Grupo, MisionID) :-
     mision(MisionID, _, _, XP_Requerida),
     sumar_xp_grupo(Grupo, XP_Total),
     XP_Total >= XP_Requerida.
 
-% verifica que algun miembro del grupo tenga cada objeto requerido
 grupo_cumple_requisitos(Grupo, MisionID) :-
     forall(
         requiere(MisionID, Objeto),
@@ -144,9 +166,6 @@ unir_nombres([P1|Resto], R) :-
     unir_nombres(Resto, TextoResto),
     atomic_list_concat([P1, ',', TextoResto], ' ', R).
 
-% -- Generacion de reporte narrativo --
-
-% caso exitoso: XP suficiente y equipo completo
 generar_reporte_grupo(Grupo, MisionID, Mensaje) :-
     grupo_puede_aceptar(Grupo, MisionID),
     grupo_cumple_requisitos(Grupo, MisionID),
@@ -155,10 +174,10 @@ generar_reporte_grupo(Grupo, MisionID, Mensaje) :-
     unir_nombres(Grupo, Nombres),
     length(Grupo, N),
     ( N =:= 1 ->
-        conjugar_accion("ser", presente, tercera, singular, Verbo),
+        conjugar_accion(ser, presente, tercera, singular, Verbo),
         Etiqueta = 'El aventurero'
     ;
-        conjugar_accion("ser", presente, tercera, plural, Verbo),
+        conjugar_accion(ser, presente, tercera, plural, Verbo),
         Etiqueta = 'El grupo'
     ),
     atomic_list_concat(
@@ -169,7 +188,6 @@ generar_reporte_grupo(Grupo, MisionID, Mensaje) :-
         ' ', Mensaje
     ).
 
-% caso fallo por XP insuficiente
 generar_reporte_grupo(Grupo, MisionID, Mensaje) :-
     \+ grupo_puede_aceptar(Grupo, MisionID),
     mision(MisionID, NombreMision, _, XP_Requerida),
@@ -182,7 +200,6 @@ generar_reporte_grupo(Grupo, MisionID, Mensaje) :-
         ' ', Mensaje
     ).
 
-% caso fallo por equipo incompleto
 generar_reporte_grupo(Grupo, MisionID, Mensaje) :-
     grupo_puede_aceptar(Grupo, MisionID),
     \+ grupo_cumple_requisitos(Grupo, MisionID),
@@ -190,5 +207,72 @@ generar_reporte_grupo(Grupo, MisionID, Mensaje) :-
     unir_nombres(Grupo, Nombres),
     atomic_list_concat(
         [Nombres, 'tienen XP suficiente pero les falta equipamiento para:', NombreMision],
+        ' ', Mensaje
+    ).
+
+
+% -- Combate --
+
+arma_mas_fuerte([Item], Item) :-
+    arma(Item, _), !.
+arma_mas_fuerte([Item|Resto], MejorArma) :-
+    \+ arma(Item, _), !,
+    arma_mas_fuerte(Resto, MejorArma).
+arma_mas_fuerte([Item|Resto], MejorArma) :-
+    arma(Item, _),
+    ( arma_mas_fuerte(Resto, MejorResto) ->
+        arma(Item, D1),
+        arma(MejorResto, D2),
+        ( D1 >= D2 -> MejorArma = Item ; MejorArma = MejorResto )
+    ;
+        MejorArma = Item
+    ).
+
+danio_jugador(Personaje, Arma, Danio) :-
+    inventario(Personaje, Inventario),
+    arma_mas_fuerte(Inventario, Arma),
+    arma(Arma, Danio).
+
+danio_grupo([], [], 0).
+danio_grupo([P|Resto], [Arma|ArmasResto], Total) :-
+    danio_jugador(P, Arma, D),
+    danio_grupo(Resto, ArmasResto, DResto),
+    Total is D + DResto.
+
+% Caso A: el ataque MATA al enemigo
+ejecutar_ataque(Grupo, Enemigo, Mensaje) :-
+    danio_grupo(Grupo, Armas, Total),
+    enemigo(Enemigo, _, Vida),
+    Total >= Vida,
+    length(Grupo, N),
+    ( N =:= 1 ->
+        conjugar_accion(derrotar, pasado, tercera, singular, Verbo)
+    ;
+        conjugar_accion(derrotar, pasado, tercera, plural, Verbo)
+    ),
+    unir_nombres(Grupo, Jugadores),
+    unir_nombres(Armas, NombresArmas),
+    atomic_list_concat(
+        [Jugadores, 'atacaron con', NombresArmas,
+         'causando', Total, 'de danio y', Verbo, 'a', Enemigo],
+        ' ', Mensaje
+    ).
+
+% Caso B: el ataque NO mata al enemigo
+ejecutar_ataque(Grupo, Enemigo, Mensaje) :-
+    danio_grupo(Grupo, Armas, Total),
+    enemigo(Enemigo, _, Vida),
+    Total < Vida,
+    length(Grupo, N),
+    ( N =:= 1 ->
+        conjugar_accion(sobrevivir, pasado, tercera, singular, Verbo)
+    ;
+        conjugar_accion(sobrevivir, pasado, tercera, plural, Verbo)
+    ),
+    unir_nombres(Grupo, Jugadores),
+    unir_nombres(Armas, NombresArmas),
+    atomic_list_concat(
+        [Jugadores, 'atacaron con', NombresArmas,
+         'causando', Total, 'de danio pero', Enemigo, Verbo, 'al ataque'],
         ' ', Mensaje
     ).
